@@ -43,6 +43,7 @@
       .getElementById('sequra-financing-widget');
     const iframe = document.createElement('iframe');
 
+    iframe.setAttribute("id", "")
     applyStylesToElement(iframe, getFinancingWidgetStyles());
     iframe.src = financingWidgetUrl;
     financingWidgetPlaceholder.appendChild(iframe);
@@ -56,6 +57,8 @@
     applyStylesToElement(iframe, getFinancingInfoWidgetStyles());
     iframe.src = financingInfoWidgetUrl;
     document.body.appendChild(iframe);
+
+    return iframe;
   }
 
   function createMessage(type, payload) {
@@ -93,7 +96,6 @@
 
   function listenToPostMessages() {
     window.addEventListener('message', (event) => {
-      console.log(event);
       switch (event.data.type) {
         case messageTypes.FINANCING_WIDGET_READY:
           sendPriceToFinancingWidget(event.source);
@@ -104,20 +106,20 @@
     }, false);
   }
 
-  function listenToProductPriceChanges() {
+  function listenToProductPriceChanges(financeWidgetIframe) {
     const elementToObserve = getProductPriceElement();
 
-    new MutationObserver((mutations) => {
-      const updatedPrice = mutations[0].addedNodes[0].data;
-
-      console.log(updatedPrice);
+    new MutationObserver(() => {
+      sendPriceToFinancingWidget(financeWidgetIframe.contentWindow)
     }).observe(elementToObserve, { childList: true });
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     listenToPostMessages();
-    addFinancingWidgetToDOM();
+
+    const financingWidgetIframe = addFinancingWidgetToDOM();
+
     addFinancingInfoWidgetToDOM();
-    listenToProductPriceChanges();
+    listenToProductPriceChanges(financingWidgetIframe);
   });
 })();
