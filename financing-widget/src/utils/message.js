@@ -1,12 +1,11 @@
-const MESSAGE_PREFIX = 'Sequra.FinancingWidget';
-
 const types = {
-  READY: 'Ready',
+  SEQURA_WIDGETS_LIB_PRICE: 'Sequra.SequraWidgetsLib.Price',
+  FINANCING_WIDGET_READY: 'Sequra.FinancingWidget.Ready',
 };
 
 function createMessage(type, payload) {
   return {
-    type: `${MESSAGE_PREFIX}.${type}`,
+    type,
     payload,
   };
 }

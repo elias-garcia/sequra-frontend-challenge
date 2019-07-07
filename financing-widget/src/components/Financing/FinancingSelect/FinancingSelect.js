@@ -1,14 +1,38 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import './FinancingSelect.css';
 
-function FinancingSelect() {
+function FinancingSelect({ creditAgreements }) {
+  function getOptions() {
+    return creditAgreements.map(creditAgreement => (
+      <option
+        value={creditAgreement.instalment_count}
+        key={creditAgreement.instalment_count}
+      >
+        {creditAgreement.instalment_count}
+        {' '}
+        cuotas de
+        {' '}
+        {creditAgreement.instalment_amount.string}
+        {' '}
+        /mes
+      </option>
+    ));
+  }
+
   return (
     <select className="FinancingSelect">
-      <option value="3">3 cuotas de 53,00 €/mes</option>
-      <option value="6">6 cuotas de 28,00 €/mes</option>
-      <option value="12">12 cuotas de 15,00 €/mes</option>
+      {creditAgreements && getOptions()}
     </select>
   );
 }
+
+FinancingSelect.propTypes = {
+  creditAgreements: PropTypes.object,
+};
+
+FinancingSelect.defaultProps = {
+  creditAgreements: null,
+};
 
 export default FinancingSelect;

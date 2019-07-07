@@ -4,25 +4,21 @@ import './Financing.css';
 import FinancingHeader from './FinancingHeader/FinancingHeader';
 import FinancingSelect from './FinancingSelect/FinancingSelect';
 
-function Financing({ price }) {
-  if (!price) {
-    return <div />;
-  }
-
+function Financing({ creditAgreements }) {
   return (
     <div className="Financing">
       <FinancingHeader />
-      {price && <FinancingSelect />}
+      <FinancingSelect creditAgreements={creditAgreements} />
     </div>
   );
 }
 
 Financing.propTypes = {
-  price: PropTypes.number,
+  creditAgreements: PropTypes.object,
 };
 
 Financing.defaultProps = {
-  price: null,
+  creditAgreements: null,
 };
 
 export default Financing;

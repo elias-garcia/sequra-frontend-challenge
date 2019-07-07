@@ -93,6 +93,7 @@
 
   function listenToPostMessages() {
     window.addEventListener('message', (event) => {
+      console.log(event);
       switch (event.data.type) {
         case messageTypes.FINANCING_WIDGET_READY:
           sendPriceToFinancingWidget(event.source);
