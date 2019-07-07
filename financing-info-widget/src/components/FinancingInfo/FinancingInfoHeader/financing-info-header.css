@@ -1,0 +1,15 @@
+.FinancingInfoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+.FinancingInfoHeader__close-button {
+  border: none;
+  background: transparent;
+}
+
+.FinancingInfoHeader__close-button:focus {
+  outline: none;
+}

@@ -1,0 +1,7 @@
+.FinancingInfo {
+  border: 1px solid var(--color-primary);
+  padding: 1rem;
+  background: var(--color-background);
+  border-radius: 4px;
+  width: 400px;
+}

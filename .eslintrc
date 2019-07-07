@@ -16,9 +16,6 @@
       "error",
       "always"
     ],
-    "comma-dangle": [
-      "error",
-      "always"
-    ]
+    "react/forbid-prop-types": "false"
   }
 }

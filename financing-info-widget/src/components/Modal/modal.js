@@ -1,19 +1,32 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 const MODAL_ELEMENT_ID = 'modal-root';
+const MODAL_OPENED_CLASS = 'modal--opened';
 
-function Modal({ children, show, }) {
+function Modal({ children, show }) {
+  const modalRoot = document.getElementById(MODAL_ELEMENT_ID);
+
+  function addOpenedClassToModal() {
+    modalRoot.classList.add(MODAL_OPENED_CLASS);
+  }
+
+  function removeOpenedClassFromModal() {
+    modalRoot.classList.remove(MODAL_OPENED_CLASS);
+  }
+
+  useEffect(() => {
+    if (show) {
+      addOpenedClassToModal();
+    } else {
+      removeOpenedClassFromModal();
+    }
+  });
+
   return (
     <>
-      {
-        show
-        && ReactDOM.createPortal(
-          children,
-          document.getElementById(MODAL_ELEMENT_ID),
-        )
-      }
+      {show && ReactDOM.createPortal(children, modalRoot)}
     </>
   );
 }

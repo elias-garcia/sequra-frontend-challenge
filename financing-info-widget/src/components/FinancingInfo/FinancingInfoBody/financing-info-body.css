@@ -1,0 +1,7 @@
+.FinancingInfoBody__block {
+  padding: 1rem 0;
+}
+
+.FinancingInfoBody__block:last-of-type {
+  padding: 0;
+}
