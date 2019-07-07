@@ -5,32 +5,3 @@
   width: 350px;
   background: var(--color-background);
 }
-
-.Financing__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
-}
-
-.Financing__header-text {
-  margin: 0;
-}
-
-.Financing__header-button {
-  border: none;
-  background: transparent;
-  text-decoration: underline;
-}
-
-.Financing__header-button:hover {
-  opacity: 0.8;
-}
-
-.Financing__header-button:focus {
-  outline: none;
-}
-
-.Financing__select {
-  width: 100%;
-}

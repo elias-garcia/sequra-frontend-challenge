@@ -1,0 +1,24 @@
+.FinancingHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.FinancingHeader__text {
+  margin: 0;
+}
+
+.FinancingHeader__button {
+  border: none;
+  background: transparent;
+  text-decoration: underline;
+}
+
+.FinancingHeader__button:hover {
+  opacity: 0.8;
+}
+
+.FinancingHeader__button:focus {
+  outline: none;
+}
