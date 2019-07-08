@@ -1,10 +1,15 @@
 (() => {
   const financingWidgetUrl = 'http://localhost:8082';
   const financingInfoWidgetUrl = 'http://localhost:8083';
+  const financingInfoWidget = 'sequra-financing-widget';
+  const financingInfoWidgetId = 'sequra-financing-info-widget';
   const productPriceSelector = '#product-price';
   const messageTypes = {
     SEQURA_WIDGETS_LIB_PRICE: 'Sequra.SequraWidgetsLib.Price',
+    SEQURA_WIDGETS_LIB_OPEN_MODAL: 'Sequra.SequraWidgetsLib.OpenModal',
     FINANCING_WIDGET_READY: 'Sequra.FinancingWidget.Ready',
+    FINANCING_WIDGET_OPEN_MODAL: 'Sequra.FinancingWidget.OpenModal',
+    FINANCING_INFO_WIDGET_CLOSE_MODAL: 'Sequra.FinancingInfoWidget.CloseModal',
   };
 
   function getFinancingWidgetStyles() {
@@ -39,11 +44,10 @@
   }
 
   function addFinancingWidgetToDOM() {
-    const financingWidgetPlaceholder = document
-      .getElementById('sequra-financing-widget');
+    const financingWidgetPlaceholder = document.getElementById(financingInfoWidget);
     const iframe = document.createElement('iframe');
 
-    iframe.setAttribute("id", "")
+    iframe.setAttribute('id', '');
     applyStylesToElement(iframe, getFinancingWidgetStyles());
     iframe.src = financingWidgetUrl;
     financingWidgetPlaceholder.appendChild(iframe);
@@ -55,10 +59,9 @@
     const iframe = document.createElement('iframe');
 
     applyStylesToElement(iframe, getFinancingInfoWidgetStyles());
+    iframe.setAttribute('id', financingInfoWidgetId);
     iframe.src = financingInfoWidgetUrl;
     document.body.appendChild(iframe);
-
-    return iframe;
   }
 
   function createMessage(type, payload) {
@@ -94,11 +97,37 @@
     dest.postMessage(message, '*');
   }
 
+  function sendCreditAgreementToFinancingInfo(dest, creditAgreement) {
+    const message = createMessage(messageTypes.SEQURA_WIDGETS_LIB_OPEN_MODAL, creditAgreement);
+
+    dest.postMessage(message, '*');
+  }
+
+  function openFinancingInfoWidget(creditAgreement) {
+    const iframe = document.getElementById(financingInfoWidgetId);
+
+    iframe.style.display = 'block';
+
+    sendCreditAgreementToFinancingInfo(iframe.contentWindow, creditAgreement);
+  }
+
+  function closeFinancingInfoModal() {
+    const iframe = document.getElementById(financingInfoWidgetId);
+
+    iframe.style.display = 'none';
+  }
+
   function listenToPostMessages() {
     window.addEventListener('message', (event) => {
       switch (event.data.type) {
         case messageTypes.FINANCING_WIDGET_READY:
           sendPriceToFinancingWidget(event.source);
+          break;
+        case messageTypes.FINANCING_WIDGET_OPEN_MODAL:
+          openFinancingInfoWidget(event.data.payload);
+          break;
+        case messageTypes.FINANCING_INFO_WIDGET_CLOSE_MODAL:
+          closeFinancingInfoModal();
           break;
         default:
           break;
@@ -110,7 +139,7 @@
     const elementToObserve = getProductPriceElement();
 
     new MutationObserver(() => {
-      sendPriceToFinancingWidget(financeWidgetIframe.contentWindow)
+      sendPriceToFinancingWidget(financeWidgetIframe.contentWindow);
     }).observe(elementToObserve, { childList: true });
   }
 

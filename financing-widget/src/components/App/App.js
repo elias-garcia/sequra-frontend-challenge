@@ -29,7 +29,7 @@ function App() {
     }
 
     function sendReadyMessageToParent() {
-      message.send(window.parent, message.types.FINANCING_WIDGET_OPEN_MODAL, state.selectedCreditAgreement);
+      message.send(window.parent, message.types.FINANCING_WIDGET_READY, {});
     }
 
     listenToPriceChangeFromParent();
@@ -37,7 +37,11 @@ function App() {
   }, []);
 
   function handleMoreInfoClick() {
-    message.send(window.parent, message.types.)
+    message.send(
+      window.parent,
+      message.types.FINANCING_WIDGET_OPEN_MODAL,
+      state.selectedCreditAgreement,
+    );
   }
 
   function handleSelectedCreditAgreementChange(selectedCreditAgreement) {
