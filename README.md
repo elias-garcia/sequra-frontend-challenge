@@ -1,31 +1,31 @@
-# Frontend coding challenge
+# Sequra frontend coding challenge
 
-This is the coding challenge for people who applied to a frontend developer position at SeQura. It's been designed to be a simplified version of the same problems we deal with.
+## Instrucciones
 
-## The challenge
+- Ejecutar el comando `npm run build` En el directorio `sequra-widgets-lib`.
+- Ejecutar el comando `npm run serve` En el directorio `financing-widget`.
+- Ejecutar el comando `npm run serve` En el directorio `financing-widget-info`.
+- Ejecutar el comando `npm start` En el directorio `api`.
+- Abrir el archivo `merchant-site/product-page.html` en un navegador web.
 
-SeQura provides e-commerce shops (merchants) a flexible payment method so their customers (shoppers) can purchase the goods paying in instalments. SeQura has analyzed, that this kind of payment method requires a biggest effort in promotion by part of the merchant to make a difference in purchases quantity and average amount.
+## Análisis
 
-The marketing team is now asking you to make a prototype of a widget that displays the financing cost for a given product for merchant's product page. They also ask you that they would want to know any shopper interaction with the widget to analyze if the widget has any impact.
+Para solventar el problema propuesto, se propone una solución basada en `iframes` comunicados a través de `postMessage`. De esta forma conseguimos que nuestro código y nuestros estilos no colisionen con los del cliente.
 
-We expect you to:
+Para insertar los widgets `financing-widget` y `financing-widget-info` se utiliza una librería que el cliente debe de cargar en su página de producto. Para ello es necesario que el cliente cree un elemento HTML con id `sequra-financing-widget` en su página de producto y referencie la librería `sequra-widgets-lib`, la cual se encargará de crear y de comunicar los iframes que encapsulan los widgets.
 
-* Create the prototype for the mockups that the marketing team has given you (`mockups.pdf`)
-  * Integrate the prototype with SeQura `CreditAgreementAPI` (`docs/credit_agreement_api.md`) to fetch financing information for a given product value.
-  * Integrate the prototype with SeQura `EventsAPI` (`docs/events_api.md`) triggering an event for each shopper interaction.
-* Integrate the prototype in the merchant sample site (`merchant-site/product-page.html`) so that every time the product price changes the financing value is updated.
-* Write up a paragraph with the way you would distribute this prototype to all our merchants.
+## Mejoras
 
-## Instructions
+Dado que el tiempo ideal para realizar la prueba es de unas 3h, quedan bastantes cosas por hacer y otras por mejorar, las cuales se enumeran a continuación:
 
-* Please read carefully the challenge and if you have any doubt or need extra info please don't hesitate to ask us before starting.
-* You shouldn't spend more than 3h on the challenge.
-* You should consider this code ready for production as it were a PR to be reviewed by a colleague. Also commit as if it were a real assignment.
-* Design, test, develop and document the code. It should be a performant, clean and well structured solution. **Then send us a link or a zip with a git repo**.
-* Remember you're dealing with resources that will be loaded on merchant's sites, so you should be careful with dependencies, styles and code clashing.
-* Create a README explaining how to setup and run your solution and a short explanation of your technical choices, tradeoffs, ...
-* You don't need to finish. We value quality over feature-completeness. If you have to leave things aside you can mention them on the README explaining why and how you would resolve them.
-* You can code the solution in a language or framework of your choice.
-* In order to use SeQura mocked APIs you need to start the environment found in folder `api`
+- Gestión de errores: actualmente no se contemplan posibles errores en la api o en los widgets.
+- Pruebas: actualmente solo se realizan "smoke tests", es decir, solo se prueba que los componentes no arrojen ningún error en la inicialización. Deberían de implementarse pruebas más exhaustivas (utilizando `Enzyme` para los componentes y `axios-mock-adapter` para las llamadas a la API).
+- Seguridad: la comunicación entre los widgets se hace sin tener en cuenta el origen de los mensajes, lo cual posibilita que cualquier origen mande mensajes a nuestros widgets, lo cual es una vulnerabilidad de seguridad.
+- Configuración: la librería de integración `sequra-widgets-lib` se ejecuta como una IIFE, lo cual no posibilita una configuración en base a parámetros de usuario. Debería de exponerse una API pública para que el usuario pueda inicializarla con parámetros a su gusto (por ejemplo, el selector CSS donde se cargará el widget o un id de `merchant`, para poder trazar los eventos por cliente por ejemplo).
+- Eventos: se han implementado solo dos eventos sencillos desde el widget `financing-widget`. Lo ideal sería también enviar eventos desde el component `financing-widget-info`. Debería de implementarse también un evento `pageView`, de forma similar a como funciona Google Analytics, para poder trazar las veces que se inicializa un widget en una página de producto de un cliente.
+- Estructura del código: actualmente, existe un directorio `utils` para cada widget. Lo ideal sería crear un módulo nuevo aparte llamado `utils` que simplemente se importe en cada widget para evitar la repetición del código.
+- Minificado de la librería `sequra-widgets-lib`: actualmente solo se está transpilando la librería a ES5 con Babel para mejorar la compatibilidad con los navegadores. Para un despligue real, debería de minificarse también en el proceso de build.
 
-**HAPPY CODING!!**
+## Despliegue
+
+Para desplegar la aplicación en producción, lo ideal sería automatizar el proceso ejecutando los tests en un servicio de integración continua y, en caso de éxito, subirlos a un servicio de almacenamiento y distribuirlos mediante una red de entrega de contenido (CDN).
