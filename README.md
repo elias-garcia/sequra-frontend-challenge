@@ -18,7 +18,7 @@ Para insertar los widgets `financing-widget` y `financing-widget-info` se utiliz
 
 Dado que el tiempo ideal para realizar la prueba es de unas 3h, quedan bastantes cosas por hacer y otras por mejorar, las cuales se enumeran a continuación:
 
-- Gestión de errores: actualmente no se contemplan posibles errores en la api o en los widgets.
+- Gestión de errores: actualmente no se capturan los posibles errores de la API. Deberían de loguearse en algún servicio de logging para su posterior seguimiento y análisis.
 - Pruebas: actualmente solo se realizan "smoke tests", es decir, solo se prueba que los componentes no arrojen ningún error en la inicialización. Deberían de implementarse pruebas más exhaustivas (utilizando `Enzyme` para los componentes y `axios-mock-adapter` para las llamadas a la API).
 - Seguridad: la comunicación entre los widgets se hace sin tener en cuenta el origen de los mensajes, lo cual posibilita que cualquier origen mande mensajes a nuestros widgets, lo cual es una vulnerabilidad de seguridad.
 - Configuración: la librería de integración `sequra-widgets-lib` se ejecuta como una IIFE, lo cual no posibilita una configuración en base a parámetros de usuario. Debería de exponerse una API pública para que el usuario pueda inicializarla con parámetros a su gusto (por ejemplo, el selector CSS donde se cargará el widget o un id de `merchant`, para poder trazar los eventos por cliente por ejemplo).
