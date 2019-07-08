@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import creditAgreementsApi from '../../api/credit-agreements-api';
-import message from '../../utils/message';
+import eventsApi from '../../api/events-api';
+import eventType from '../../enums/event-type';
+import messageType from '../../enums/message-type';
+import messenger from '../../utils/messenger';
 import Financing from '../Financing/Financing';
 import './App.css';
 
@@ -22,25 +25,37 @@ function App() {
 
     function listenToPriceChangeFromParent() {
       window.addEventListener('message', (event) => {
-        if (event.data.type === message.types.SEQURA_WIDGETS_LIB_PRICE) {
+        if (event.data.type === messageType.SEQURA_WIDGETS_LIB_PRICE) {
           getCreditAgreements(event.data.payload);
         }
       }, false);
     }
 
     function sendReadyMessageToParent() {
-      message.send(window.parent, message.types.FINANCING_WIDGET_READY, {});
+      messenger.send(window.parent, messageType.FINANCING_WIDGET_READY, {});
     }
 
     listenToPriceChangeFromParent();
     sendReadyMessageToParent();
   }, []);
 
+  function sendMoreInfoClickEvent() {
+    eventsApi.recordEvent(eventType.MORE_INFO_BUTTON_CLICK);
+  }
+
   function handleMoreInfoClick() {
-    message.send(
+    messenger.send(
       window.parent,
-      message.types.FINANCING_WIDGET_OPEN_MODAL,
+      messageType.FINANCING_WIDGET_OPEN_MODAL,
       state.selectedCreditAgreement,
+    );
+    sendMoreInfoClickEvent();
+  }
+
+  function sendCreditAgreementChangeEvent(instalmentCount) {
+    eventsApi.recordEvent(
+      eventType.SIMULATOR_INSTALMENT_CHANGE,
+      { value: instalmentCount },
     );
   }
 
@@ -49,6 +64,7 @@ function App() {
       ...state,
       selectedCreditAgreement,
     });
+    sendCreditAgreementChangeEvent(selectedCreditAgreement.instalment_count);
   }
 
   return (

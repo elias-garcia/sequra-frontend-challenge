@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import message from '../../utils/message';
+import messageType from '../../enums/message-type';
+import messenger from '../../utils/messenger';
 import FinancingInfo from '../FinancingInfo/financing-info';
 import Modal from '../Modal/modal';
 import './App.css';
@@ -11,7 +12,7 @@ function App() {
   });
 
   function sendCloseMessageToParent() {
-    message.send(window.parent, message.types.FINANCING_INFO_WIDGET_CLOSE_MODAL, {});
+    messenger.send(window.parent, messageType.FINANCING_INFO_WIDGET_CLOSE_MODAL, {});
   }
 
   function handleModalClose() {
@@ -25,7 +26,7 @@ function App() {
   useEffect(() => {
     function listenToShowFromParent() {
       window.addEventListener('message', (event) => {
-        if (event.data.type === message.types.SEQURA_WIDGETS_LIB_OPEN_MODAL) {
+        if (event.data.type === messageType.SEQURA_WIDGETS_LIB_OPEN_MODAL) {
           setState({
             showModal: true,
             creditAgreement: event.data.payload,
