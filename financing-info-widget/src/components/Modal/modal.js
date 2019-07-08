@@ -26,14 +26,19 @@ function Modal({ children, show }) {
 
   return (
     <>
-      {show && ReactDOM.createPortal(children, modalRoot)}
+      {show && children && ReactDOM.createPortal(children, modalRoot)}
     </>
   );
 }
 
 Modal.propTypes = {
-  children: PropTypes.element.isRequired,
-  show: PropTypes.bool.isRequired,
+  children: PropTypes.element,
+  show: PropTypes.bool,
+};
+
+Modal.defaultProps = {
+  children: null,
+  show: false,
 };
 
 export default Modal;

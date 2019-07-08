@@ -44,7 +44,7 @@ function FinancingSelect({ creditAgreements, selectedCreditAgreement, onCreditAg
 }
 
 FinancingSelect.propTypes = {
-  creditAgreements: PropTypes.object,
+  creditAgreements: PropTypes.array,
   selectedCreditAgreement: PropTypes.object,
   onCreditAgreementChanges: PropTypes.func,
 };

@@ -9,6 +9,6 @@ it('renders without crashing', () => {
   div.setAttribute('id', 'modal-root');
   body.appendChild(div);
 
-  ReactDOM.render(<Modal />, div);
+  ReactDOM.render((<Modal />), div);
   ReactDOM.unmountComponentAtNode(div);
 });
