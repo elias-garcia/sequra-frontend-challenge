@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "preserve": "npm run build",
     "serve": "http-server build -p 8083",
     "build": "react-scripts build",
     "test": "react-scripts test",
